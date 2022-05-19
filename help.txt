@@ -1,0 +1,11 @@
+# help.txt
+
+built and tested using python 3.7.11
+
+available commands
+
+swap, 2 arguments (file names to be swapped)
+- saves the files with original names and "swapped" appended at the currentworkingdirectory
+
+sort, 1 argument (file name to be sorted.)
+- saves the file with original name and "sorted" appended at the currentworkingdirectory
