@@ -25,7 +25,7 @@ def sortHandler():
     pictureScrambler.convertImage( file )
 
 def helpHandler():
-    f = open( "help.txt", "r" )
+    f = open( "readme.md", "r" )
     print( f.read() ) 
 
 

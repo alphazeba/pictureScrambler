@@ -1,4 +1,4 @@
-# help.txt
+# pictureScrambler
 
 built and tested using python 3.7.11
 
