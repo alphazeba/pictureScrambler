@@ -7,6 +7,7 @@ use
 alias pcs="/path/to/python /path/to/pictureScrambler/main.py"
 ```
 to easily use `pcs swap imageA imageB` on terminal.
+_filenames are allowed to urls if you'd like_
 
 available commands
 
