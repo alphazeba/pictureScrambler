@@ -85,44 +85,41 @@ def getRelativeIndexInOtherArray( a, b, i ):
     pos = i / len( a )
     return math.floor( pos * len( b ) )
 
+class swapManager:
+    def __init__( self, image ):
+        self.originalSize = image.size
+        self.sortedPixels = sortImage( image )
+
+    def getSortedPixels( self ):
+        return self.sortedPixels
+    
+    def getSwappedImage( self, otherPixels ):
+        swappedPixels = []
+        for i in range( len( self.sortedPixels ) ):
+            thisPixel = self.sortedPixels[i]
+            otherPixel = otherPixels[getRelativeIndexInOtherArray( self.sortedPixels, otherPixels, i )]
+            swappedPixels.append( lonePixel( otherPixel.getColor(), thisPixel.getLocation() ) )
+        return rebuildImage( swappedPixels, self.originalSize )
+
 def swapImageColor( filenameA, filenameB ):
     files = [ filenameA, filenameB ]
-    sortedPixels = []
-    originalSize = []
     totalT = timer()
     totalT.start()
     t = timer()
 
     log( "start sorting pixels" )
     t.start()
-    for filename in files: 
-        image = openImage( filename )
-        originalSize.append( image.size )
-        pixels = sortImage( image )
-        sortedPixels.append( pixels )
+    managers = [ swapManager( openImage( filename ) ) for filename in files ]
     log( t.getTimeResultString( "sort pixels" ) )
 
-    log( "start swapping pixels" )
-    t.start()
-    swappedPixels = []
-    for i in range( 2 ):
+    for i in range( len(  managers ) ):
+        log( "start swapping pixels for " + files[i] )
+        t.start()
         thisIndex = i
         otherIndex = (i+1)%2
-        swapped = []
-        for j in range( len( sortedPixels[thisIndex] ) ):
-            thisPixel = sortedPixels[thisIndex][j]
-            otherPixel = sortedPixels[otherIndex][getRelativeIndexInOtherArray( sortedPixels[thisIndex], sortedPixels[otherIndex], j )]
-            swapped.append( lonePixel( otherPixel.getColor(), thisPixel.getLocation() ) )
-        swappedPixels.append( swapped )
-    log( t.getTimeResultString( "swap pixels" ) )
-    
-    log( "start rebuilding the images" )
-    t.start()
-    for i in range( len( files ) ):
-        image = rebuildImage( swappedPixels[i], originalSize[i] )
-        filename = buildAutoLocalFile( files[i], "swapped" )
-        saveImage( image, filename )
-        log( "completed image " + filename )
-    log( t.getTimeResultString( "rebuild the images" ) )
+        swappedImage = managers[thisIndex].getSwappedImage( managers[otherIndex].getSortedPixels() )
+        newFilename = buildAutoLocalFile( files[i], "swapped" )
+        saveImage( swappedImage, newFilename )
+        log( t.getTimeResultString( "swap " + files[i] ) )
 
     log( "fully completed swap in " + str( totalT.getTimeSeconds() ) )
