@@ -2,6 +2,12 @@
 
 built and tested using python 3.7.11
 
+use
+```
+alias pcs="/path/to/python /path/to/pictureScrambler/main.py"
+```
+to easily use `pcs swap imageA imageB` on terminal.
+
 available commands
 
 swap, 2 arguments (file names to be swapped)
